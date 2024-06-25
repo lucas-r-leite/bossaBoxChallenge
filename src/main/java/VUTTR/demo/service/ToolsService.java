@@ -22,6 +22,9 @@ public class ToolsService {
         if(tools== null){
             throw new Exception("Tools can't be null");
         }
+        if(toolsRepository.findByTitle(tools.getTitle()).isPresent() && toolsRepository.findByLink(tools.getLink()).isPresent()){
+            throw new Exception("Tool with same title or link already exists");
+        }
         return toolsRepository.save(tools);
 
     }
@@ -46,6 +49,10 @@ public class ToolsService {
 
         if(updatedTools == null){
             throw new Exception("Tools can't be null");
+        }
+
+        if(toolsRepository.findByTitle(updatedTools.getTitle()).isPresent() && toolsRepository.findByLink(updatedTools.getLink()).isPresent()){
+            throw new Exception("Tool with same title or link already exists");
         }
 
         Tools tools = toolsRepository.findById(updatedTools.getId()).orElse(null);
