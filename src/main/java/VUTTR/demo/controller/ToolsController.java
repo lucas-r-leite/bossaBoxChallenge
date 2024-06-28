@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import VUTTR.demo.dto.ToolsDTO;
 import VUTTR.demo.entity.Tools;
 import VUTTR.demo.service.ToolsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 @RequestMapping("/tools")
@@ -27,6 +29,8 @@ public class ToolsController {
     private ToolsService toolsService;
 
  @GetMapping
+ @Operation(summary = "Get all tools or tools by tag", description = "Retrieve a list of all tools or filter by tag if provided")
+@Parameter(name = "tag", description = "Filter tools by tag (optional)", required = false)
 public ResponseEntity<List<ToolsDTO>> findAll(@RequestParam(required = false) String tag){
     if (tag!= null) {
         List<ToolsDTO> tools = toolsService.findByTag(tag);
@@ -37,6 +41,7 @@ public ResponseEntity<List<ToolsDTO>> findAll(@RequestParam(required = false) St
     }
 }
     @PostMapping
+    @Operation(summary = "Create a new tool", description = "Create a new tool")
     public ResponseEntity<?> createTool(@RequestBody Tools body){
        
         try{
@@ -48,6 +53,7 @@ public ResponseEntity<List<ToolsDTO>> findAll(@RequestParam(required = false) St
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a tool", description = "Update an existing tool")
     public ResponseEntity<?> updateTool(@PathVariable Long id, @RequestBody Tools body){
         try{
             Tools tools = toolsService.updateTools(body);
@@ -58,6 +64,7 @@ public ResponseEntity<List<ToolsDTO>> findAll(@RequestParam(required = false) St
     }
 
     @DeleteMapping("/{id}")
+     @Operation(summary = "Delete a tool", description = "Delete a tool by its ID")
     public ResponseEntity<?> deleteTool(@PathVariable Long id){
 
         try{
